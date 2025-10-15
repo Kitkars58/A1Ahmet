@@ -4420,7 +4420,28 @@
         .then(() => console.log('Service Worker yüklendi'))
         .catch(err => console.error('SW hatası:', err));
     }
+     <script>
+        let installPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          installPrompt = e;
+        
+          const btn = document.createElement('button');
+          btn.textContent = '📲 Uygulamayı Yükle';
+          btn.className = 'fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg';
+          document.body.appendChild(btn);
+        
+          btn.addEventListener('click', async () => {
+            installPrompt.prompt();
+            const choice = await installPrompt.userChoice;
+            console.log('Kullanıcı seçimi:', choice.outcome);
+            installPrompt = null;
+            btn.remove();
+          });
+        });
+        </script>
     </script>
     
 </body>
 </html>
+
